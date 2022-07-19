@@ -224,9 +224,9 @@ static const CGFloat kDefaultYearHeaderFontSizeiPhone = 20;	// deafult font size
     comp.year = indexPath.section;
     comp.month = indexPath.item;
     NSDate *date = [self.calendar dateByAddingComponents:comp toDate: self.startDate options:0];
-    NSInteger *index = [preselectedDates indexOfObject:date];
+    NSUInteger index = [self.preselectedDates indexOfObject:date];
     if (index != nil) {
-        return preselectedDates[index];
+        return self.preselectedDates[index];
     } else {
         return nil;
     }
