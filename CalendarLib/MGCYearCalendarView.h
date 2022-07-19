@@ -105,6 +105,10 @@
  */
 - (void)scrollToDate:(NSDate*)date animated:(BOOL)animated;
 
+@property (nonatomic, strong) NSMutableArray<NSDate*> *preselectedDates;
+@property (nonatomic, strong) UIColor *todayHighlightColor;
+@property (nonatomic, strong) UIColor *preselectedHighlightColor;
+
 @end
 
 //////////////////////////////////////////////////////////////////////////////////////////////
