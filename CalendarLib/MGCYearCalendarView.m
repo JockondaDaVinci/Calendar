@@ -218,18 +218,22 @@ static const CGFloat kDefaultYearHeaderFontSizeiPhone = 20;	// deafult font size
     return [self.calendar dateByAddingComponents:comp toDate:self.startDate options:0];
 }
 
-- (NSDate*)preselectDateForIndexPath:(NSIndexPath*)indexPath
+- (NSArray<NSDate*>*)preselectDatesForIndexPath:(NSIndexPath*)indexPath
 {
     NSDateComponents *comp = [NSDateComponents new];
     comp.year = indexPath.section;
     comp.month = indexPath.item;
     NSDate *date = [self.calendar dateByAddingComponents:comp toDate: self.startDate options:0];
-    NSUInteger index = [self.preselectedDates indexOfObject:date];
-    if (index != nil) {
-        return self.preselectedDates[index];
-    } else {
-        return nil;
+    NSDateComponents *currentComp = [self.calendar components:NSCalendarUnitMonth|NSCalendarUnitYear fromDate:date];
+    NSArray<NSDate*> *datesToReturn = [NSArray new];
+    
+    for (NSDate *preselectDate in self.preselectedDates) {
+        NSDateComponents *_comp = [self.calendar components:NSCalendarUnitMonth|NSCalendarUnitYear fromDate:preselectDate];
+        if (_comp.year == currentComp.year && _comp.month == currentComp.month) {
+            datesToReturn = [datesToReturn arrayByAddingObject:preselectDate];
+        }
     }
+    return datesToReturn;
 }
 
 - (NSInteger)numberOfMonthsForYearAtIndex:(NSInteger)year
@@ -486,9 +490,13 @@ static const CGFloat kDefaultYearHeaderFontSizeiPhone = 20;	// deafult font size
         cell.calendarView.highlightedDays = [NSIndexSet indexSetWithIndex:i];
         cell.calendarView.highlightColor = self.todayHighlightColor;
     } else {
-        NSDate *preselectDate = [self preselectDateForIndexPath:indexPath];
-        NSUInteger i = [self.calendar components:NSCalendarUnitDay fromDate:preselectDate toDate:[NSDate date] options:0].day + 1;
-        cell.calendarView.highlightedDays = [NSIndexSet indexSetWithIndex:i];
+        NSArray<NSDate*> *preselectDates = [self preselectDatesForIndexPath:indexPath];
+        NSMutableIndexSet *set = [NSMutableIndexSet indexSet];
+        for (NSDate *date in preselectDates) {
+            NSUInteger i = [self.calendar component:NSCalendarUnitDay fromDate:date];
+            [set addIndex:i];
+        }
+        cell.calendarView.highlightedDays = set;
         cell.calendarView.highlightColor = self.preselectedHighlightColor;
     }
     
