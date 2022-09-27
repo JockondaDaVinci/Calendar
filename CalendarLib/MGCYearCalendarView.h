@@ -108,6 +108,7 @@
 @property (nonatomic, strong) NSArray<NSDate*> *preselectedDates;
 @property (nonatomic, strong) UIColor *todayHighlightColor;
 @property (nonatomic, strong) UIColor *preselectedHighlightColor;
+@property (nonatomic, strong) NSLocale *locale;
 
 @end
 
