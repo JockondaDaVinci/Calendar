@@ -108,7 +108,6 @@ static const CGFloat kDefaultYearHeaderFontSizeiPhone = 20;	// deafult font size
     _startDate = [_calendar mgc_startOfYearForDate:[NSDate date]];
     _dateFormatter = [NSDateFormatter new];
     _dateFormatter.calendar = _calendar;
-    _dateFormatter.locale = _locale;
     if (isiPad) {
         //NSLog(@"---------------- iPAD ------------------");
         _daysFont = [UIFont systemFontOfSize:kDefaultDayFontSize];
@@ -149,6 +148,14 @@ static const CGFloat kDefaultYearHeaderFontSizeiPhone = 20;	// deafult font size
 }
 
 #pragma mark - Properties
+
+- (void)setLocale:(NSLocale*)locale
+{
+    _locale = locale;
+    _dateFormatter = [NSDateFormatter new];
+    _dateFormatter.calendar = _calendar;
+    _dateFormatter.locale = locale;
+}
 
 - (UICollectionViewFlowLayout*)layout
 {
